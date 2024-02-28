@@ -2,10 +2,10 @@
 
 ## Stack Empleados en el proyectos:
 
-**Express:** https://expressjs.com
-**NextJS:** https://nextjs.org/
-**NodeJS:** https://nodejs.org/en/
-**PostgresSQL:** https://www.postgresql.org/
+- **Express:** https://expressjs.com
+- **NextJS:** https://nextjs.org/
+- **NodeJS:** https://nodejs.org/en/
+- **PostgresSQL:** https://www.postgresql.org/
 
 ## Requisitos para empezar el proyecto:
 
@@ -34,14 +34,14 @@ backend
 
 ## Para cumplir con este objetivo, el proyecto consta de dos repositorios:
 
-1. Autority API Challenge
+### 1. Autority API Challenge
 [Backend](https://github.com/LATAMPARTS/autority-api-challenge)
 
 Esta Aplicación será la encargada de proporcionar la capa de API al cliente, en esta se encuentra la estructura REST y los métodos definidos sobre los cuales se deben trabajar los endpoints indicados en el archivo Readme del repositorio, y que posteriormente serán usados en la aplicación del Cliente.
 
 La aplicación tiene una estructura básica lista para emplear, construida sobre Express, el objetivo está en aplicar la lógica necesaria (cálculos, validaciones, consultas a base, etc) dentro de las diferentes rutas que se deben crear en src/routes/index.js, en base a las descripciones de cada endpoint descrita en el archivo Readme.md en el que adicionalmente se encuentran las indicaciones para levantar el proyecto.
 
-2. Autority Client Challenge
+### 2. Autority Client Challenge
 [Fronend](https://github.com/LATAMPARTS/autority-client-challenge)
 
 La Aplicación del cliente es la que brinda a los usuarios una interfaz visual para poder gestionar las tareas, haciendo uso de la capa de API previamente desarrollada en el repositorio Autority API Challenge”. Para ello se tienen que crear las secciones necesarias definidas en el Archivo Readme.md y cumplir con los requerimientos del usuario que es:
