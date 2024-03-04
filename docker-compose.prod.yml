@@ -89,3 +89,7 @@ services:
 
 volumes:
   pgdata:
+  certs:
+  vhostd:
+  html:
+  acme:
