@@ -77,7 +77,7 @@ services:
       VIRTUAL_HOST: autority-challenge.yeifer.co,www.autority-challenge.yeifer.co
       LETSENCRYPT_HOST: autority-challenge.yeifer.co,www.autority-challenge.yeifer.co
       LETSENCRYPT_EMAIL: developer@yeifer.co
-    ports:
+    expose:
       - 80:3000
 
   adminer:
