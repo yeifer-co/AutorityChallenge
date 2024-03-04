@@ -1,0 +1,91 @@
+version: '3.1'
+
+services:
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:ro
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - acme:/etc/acme.sh
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - acme:/etc/acme.sh
+
+  database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database.init.sql:/docker-entrypoint-initdb.d/database.init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: backend-api
+    build:
+      dockerfile: ./images/backend.dockerfile
+    environment:
+      PORT: ${PORT}
+      NODE_ENV: ${NODE_ENV}
+      CORS_ALLOWED_ORIGIN: ${CORS_ALLOWED_ORIGIN}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+    depends_on:
+      database:
+        condition: service_healthy
+    links:
+      - database
+    ports:
+      - 4000:4000
+
+  frontend:
+    image: frontend-app
+    build:
+      dockerfile: ./images/frontend.dockerfile
+    environment:
+      API_ENDPOINT: ${API_ENDPOINT}
+      VIRTUAL_HOST: autority-challenge.yeifer.co,www.autority-challenge.yeifer.co
+      LETSENCRYPT_HOST: autority-challenge.yeifer.co,www.autority-challenge.yeifer.co
+      LETSENCRYPT_EMAIL: developer@yeifer.co
+    ports:
+      - 80:3000
+
+  adminer:
+    image: adminer
+    environment:
+      ADMINER_DESIGN: "pepa-linha-dark"
+    ports:
+      - 8080:8080
+
+volumes:
+  pgdata:
