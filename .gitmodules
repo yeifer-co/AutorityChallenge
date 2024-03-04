@@ -1,6 +1,6 @@
 [submodule "backend"]
 	path = backend
-	url = git@github.com:yeifer-co/todo-api-rest-express.git
+	url = https://github.com/yeifer-co/todo-api-rest-express.git
 [submodule "frontend"]
 	path = frontend
-	url = git@github.com:yeifer-co/todo-front-next.git
+	url = https://github.com/yeifer-co/todo-front-next.git
